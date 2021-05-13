@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+tests/test.py
+app/__pycache__
+flask
+tests/chromedriver
+.vscode
+.DS_Store
