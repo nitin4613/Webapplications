@@ -29,14 +29,12 @@ jobs:
     steps:
       - checkout
       - run:
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-      - run: pip -V
-      - run: pip install -r requirements.txt
-      - run: pip freeze
-      - run: python -V
-      - run: python app/app.py
+           command: |
+             python3 -m venv venv
+             . venv/bin/activate
+             pip -V
+             pip install -r requirements.txt
+             python app/app.py
   test:
     working_directory: ~/Webapplications
     docker:
