@@ -26,7 +26,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2
-    steps:pip
+    steps:
       - checkout
       - run:
           command: |
