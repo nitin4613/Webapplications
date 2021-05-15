@@ -12,11 +12,11 @@ workflows:
     jobs:
       - build
       - deploy:
-        requires:
-          - build
-        filters:
-          branches:
-            only: master
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
 
 ##################
 # Job Definitions
@@ -58,5 +58,6 @@ jobs:
           destination: tr1
       - store_test_results:
           path: test-reports/
+
   deploy:
     - heroku/deploy-via-git
