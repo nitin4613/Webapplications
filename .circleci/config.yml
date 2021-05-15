@@ -29,6 +29,7 @@ jobs:
              python3 -m venv venv
              . venv/bin/activate
              pip install -r requirements.txt
+             
   test:
     working_directory: ~/Webapplications
     docker:
@@ -59,7 +60,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            python tests/test_frontend.py
+            python tests/test.py
       - store_artifacts:
           path: test-reports/
           destination: tr1
