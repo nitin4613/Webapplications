@@ -1,0 +1,6 @@
+-r common.txt
+coverage==5.5
+selenium==3.141.0
+unittest-xml-reporting==3.0.4
+click==8.0.0
+chromedriver==2.24.1

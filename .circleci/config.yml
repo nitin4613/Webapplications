@@ -1,6 +1,8 @@
 version: 2.1
 orbs:
   python: circleci/python@1.4.0
+  heroku: circleci/heroku@1.2.6
+
 ############
 # Workflows
 ############
@@ -8,10 +10,13 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: master
+      - build
+      - deploy:
+        requires:
+          - build
+        filters:
+          branches:
+            only: master
 
 ##################
 # Job Definitions
@@ -34,14 +39,14 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
       - restore_cache:
-          key: deps2-{{ checksum "requirements.txt" }}
+          key: deps2-{{ checksum "requirements/dev.txt" }}
       - run:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements.txt      
+            pip install -r requirements/dev.txt      
       - save_cache:
-          key: deps2-{{ checksum "requirements.txt" }}
+          key: deps2-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
       - run:
@@ -53,5 +58,5 @@ jobs:
           destination: tr1
       - store_test_results:
           path: test-reports/
-
-    
+  deploy:
+    - heroku/deploy-via-git
