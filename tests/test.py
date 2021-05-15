@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 # driver.get('http://localhost:5000/')
+time.sleep(10)
 try: 
     driver = webdriver.Chrome()
     driver.get('http://localhost:5000/')
@@ -20,9 +21,5 @@ font_element_text = driver.find_element_by_css_selector("#showText").find_elemen
 
 if font_element_text == "Thanks for logging in! Enjoy":
     print("Submit button is clicked correctly!")
-
-
-while True:
-   time.sleep(1)
 
 driver.quit()
