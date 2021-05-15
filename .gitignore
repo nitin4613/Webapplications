@@ -1,6 +1,8 @@
 # created by virtualenv automatically
-app/__pycache__
 flask
-tests/chromedriver
+*chromedriver
 .vscode
 .DS_Store
+test-reports/
+*__pycache__
+tests/naah.txt
