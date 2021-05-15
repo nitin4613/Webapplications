@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-
   python: circleci/python@1.4.0
 ############
 # Workflows
@@ -11,8 +10,6 @@ workflows:
     jobs:
       - build
       - test:
-          requires:
-            - build
           filters:
             branches:
               only: master
@@ -24,20 +21,18 @@ jobs:
   build:
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.9.2
+      - image: circleci/python:3.9.2-browsers
     steps:
       - checkout
       - run:
            command: |
              python3 -m venv venv
              . venv/bin/activate
-             pip -V
              pip install -r requirements.txt
-             python app/app.py
   test:
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.9.2
+      - image: circleci/python:3.9.2-browsers
     steps:
       - checkout 
       - run: mkdir test-reports
