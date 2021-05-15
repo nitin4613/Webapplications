@@ -32,7 +32,7 @@ jobs:
              . venv/bin/activate
              pip install -r requirements.txt
              python3 app/app.py &
-             ps | grep app.py
+             ps
   test:
     working_directory: ~/Webapplications
     docker:
