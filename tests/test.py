@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 driver = webdriver.Chrome()
-driver.get('http://localhost:5000/')
+driver.get('http://localhost:4444/')
 
 driver.implicitly_wait(10)
 
