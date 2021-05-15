@@ -11,7 +11,7 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy:
+      - heroku/deploy-via-git:
           requires:
             - build
           filters:
@@ -58,6 +58,3 @@ jobs:
           destination: tr1
       - store_test_results:
           path: test-reports/
-
-  deploy:
-    - heroku/deploy-via-git
