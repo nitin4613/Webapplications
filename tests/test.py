@@ -3,10 +3,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-
-driver = webdriver.Chrome()
-driver.get('http://localhost:4444/')
-
+# driver.get('http://localhost:5000/')
+try: 
+    driver = webdriver.Chrome()
+    driver.get('http://localhost:5000/')
+except Exception as e:
+    print(e)
 driver.implicitly_wait(10)
 
 # Find submit button using css seelector and click it
@@ -21,6 +23,6 @@ if font_element_text == "Thanks for logging in! Enjoy":
 
 
 while True:
-    time.sleep(1)
+   time.sleep(1)
 
 driver.quit()

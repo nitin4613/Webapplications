@@ -10,6 +10,8 @@ workflows:
     jobs:
       - build
       - test:
+          requires:
+            - build
           filters:
             branches:
               only: master
@@ -30,6 +32,7 @@ jobs:
              . venv/bin/activate
              pip install -r requirements.txt
              python3 app/app.py &
+             ps | grep app.py
   test:
     working_directory: ~/Webapplications
     docker:
