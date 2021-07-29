@@ -11,9 +11,13 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - heroku/deploy-via-git:
+      - hold:
+          type: approval
           requires:
             - build
+      - heroku/deploy-via-git:
+          requires:
+            - hold
           filters:
             branches:
               only: master
