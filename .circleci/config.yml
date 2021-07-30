@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.1 
 orbs:
   python: circleci/python@1.4.0
   heroku: circleci/heroku@1.2.6
@@ -11,10 +11,12 @@ workflows:
   build-deploy:
     jobs:
       - build
+      - test
       - hold:
           type: approval
           requires:
             - build
+            - test
       - heroku/deploy-via-git:
           requires:
             - hold
@@ -26,13 +28,38 @@ workflows:
 # Job Definitions
 ##################
 jobs:
-  build:       
+  build: 
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
     steps:
       - checkout 
-      - run: mkdir test-reports
+      - restore_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
+      - run:
+          name: Creating venv and Installing Python Dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt      
+      - save_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
+          paths:
+            - 'venv'
+      - run:
+          name: Activate venv and Checking python version
+          command: |
+            . venv/bin/activate
+            python --version 
+  test:       
+    working_directory: ~/Webapplications
+    docker:
+      - image: circleci/python:3.9.2-browsers
+    steps:
+      - checkout 
+      - run: 
+          name: Creating test report Directory
+          command: mkdir test-reports
       - run:
           name: Download Selenium
           command: |
@@ -45,6 +72,7 @@ jobs:
       - restore_cache:
           key: deps2-{{ checksum "requirements/dev.txt" }}
       - run:
+          name: Creating venv and Installing Python Dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -54,11 +82,12 @@ jobs:
           paths:
             - 'venv'
       - run:
+          name: Running WebApp testing
           command: |
             . venv/bin/activate
             python manage.py test
-      - store_artifacts:
+      - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
-          destination: tr1
+          destination: trl
       - store_test_results:
           path: test-reports/
