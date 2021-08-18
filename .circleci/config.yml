@@ -57,7 +57,6 @@ jobs:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
     steps:
-      
       - checkout 
       - run: 
           name: Creating test report Directory
@@ -84,16 +83,10 @@ jobs:
           paths:
             - 'venv'
       - run:
-          name: Run tests
+          name: Running WebApp testing
           command: |
-            TESTFILES=$(circleci tests glob "tests/*.py" | sed 's/\S\+__init__.py//g')
-            echo $TESTFILES | tr ' ' '\n' | sort | uniq > circleci_test_files.txt
-            cat circleci_test_files.txt
-            TESTFILES=$(circleci tests split --split-by=timings circleci_test_files.txt)
-            TESTFILES=$(echo $TESTFILES | tr "/" "." | sed 's/.py//g')
-            echo $TESTFILES
-            . venv/bin/activate 
-            python manage.py test --verbosity=2 $TESTFILES 
+            . venv/bin/activate
+            python manage.py test
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
           destination: trl
