@@ -55,6 +55,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
+    parallelism: 4
     steps:
       - checkout 
       - run: 
