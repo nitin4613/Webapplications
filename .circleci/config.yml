@@ -32,10 +32,11 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
+    resource_class: small
     steps:
       - checkout 
       - restore_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
@@ -43,7 +44,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements/dev.txt      
       - save_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
       - run:
@@ -56,6 +57,7 @@ jobs:
     docker:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
+    resource_class: medium
     steps:
       - checkout 
       - run: 
@@ -71,7 +73,7 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
       - restore_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
@@ -79,7 +81,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements/dev.txt      
       - save_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
       - run:
