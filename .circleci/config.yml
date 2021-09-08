@@ -64,7 +64,7 @@ jobs:
     docker:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
-    resource_class: medium
+    resource_class: medium # Resource Class defined as Medium
     steps:
       - checkout 
       - run: 
@@ -101,4 +101,3 @@ jobs:
           destination: trl
       - store_test_results:
           path: test-reports/
-          
