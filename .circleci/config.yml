@@ -1,6 +1,6 @@
 version: 2.1 # CircleCI version number
 
-#### ORBS ###
+#### Orbs ###
 orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # deploy application with minimal config to Heroku using CircleCI authored orbs
@@ -56,9 +56,6 @@ jobs:
             . venv/bin/activate
             python --version 
 
-
-
-
   test:       
     working_directory: ~/Webapplications
     docker:
@@ -100,4 +97,4 @@ jobs:
           path: test-reports/
           destination: trl
       - store_test_results:
-          path: test-reports/
+          path: test-reports/ 
