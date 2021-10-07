@@ -35,7 +35,7 @@ jobs:
   build: 
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.9.2-browsers
+      - image: circleci/python:3.9.2-browsers 
     resource_class: small
     steps:
       - checkout 
