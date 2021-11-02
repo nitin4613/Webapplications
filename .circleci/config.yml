@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Running Test
           command: |
-            TEST=$(circleci tests glob **/manage/*.py | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "/**/manage_*.py"| circleci tests split --split-by=timings)
             venv/bin/activate
             python manage.py test
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
