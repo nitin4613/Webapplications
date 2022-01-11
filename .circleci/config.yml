@@ -61,7 +61,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
-    parallelism: 5
+    parallelism: 4
     resource_class: medium # Resource Class defined as Medium
     steps:
       - checkout 
