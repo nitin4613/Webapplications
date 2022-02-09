@@ -40,24 +40,24 @@ jobs:
       - image: circleci/python:3.9.2-browsers  # convience image
     resource_class: small
     steps:
-      - checkout 
-      - restore_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
-      - run:
-          name: Creating venv and Installing Python Dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt      
-      - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+       - checkout
+       - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
+          keys:
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - pip-packages-v1-{{ .Branch }}-
+            - pip-packages-v1-
+       - run: 
+          name: Install Python venv 
+          command: | 
+            pipenv install 
+       - run:
+          name: Check Python version
+          command: | 
+            pipenv run python --version
+       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
-            - 'venv'
-      - run:
-          name: Activate venv and Checking python version
-          command: |
-            . venv/bin/activate
-            python --version 
+            - ./venv
 
   test:       
     working_directory: ~/Webapplications
@@ -79,20 +79,26 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
-      - restore_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
-      -  run:
-          name: Creating venv and Installing Python Dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt
+      - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
+          keys:
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - pip-packages-v1-{{ .Branch }}-
+            - pip-packages-v1-
+      - run: 
+          name: Install Python venv 
+          command: | 
+            pipenv install 
+      - run:
+          name: Check Python version
+          command: | 
+            pipenv run python --version
       - snyk/scan:
-            fail-on-issues: false     
-      - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+            fail-on-issues: false
+      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
-            - 'venv'
+            - ./venv 
+
       - run:
           name: Running Test
           command: |
