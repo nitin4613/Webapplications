@@ -75,8 +75,6 @@ Scan via SonarCloud:
 Scan via Snyk:
   steps:
     - synk/scan
-
-
 test:     
   working_directory: ~/Webapplications
   docker:
