@@ -75,7 +75,7 @@ jobs:
     - sonarcloud/scan
   
     Scan via Synk:
-      docker-image-name: ${DOCKER_IMAGE}${CircleCI_SHA1}:
+      docker-image-name: ${DOCKER_IMAGE}${CircleCI_SHA1}
       environment: 
         DOCKER_IMAGE: cimg/node:12.18.1
       - 
