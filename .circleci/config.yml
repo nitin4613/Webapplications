@@ -74,7 +74,7 @@ jobs:
     - checkout
     - sonarcloud/scan
   Scan via Synk:
-      working_directory: ~/Webapplications
+      working_directory: ~/Webapplications/
       docker:
         - image: circleci/python:3.9.2-browsers  
       steps:
