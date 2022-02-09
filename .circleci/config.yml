@@ -47,7 +47,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-                - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+                - pip-packages-v1-{{ .Branch }}-nitin
                 - pip-packages-v1-{{ .Branch }}-
                 - pip-packages-v1-
       - run:
@@ -55,7 +55,7 @@ jobs:
           command: |
            pipenv install 
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
             - 'venv'
       - snyk/scan 
@@ -95,7 +95,7 @@ jobs:
           background: true
       - restore_cache:
           keys: 
-                - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+                - pip-packages-v1-{{ .Branch }}-nitin
                 - pip-packages-v1-{{ .Branch }}-
                 - pip-packages-v1-
       - run:
@@ -103,7 +103,7 @@ jobs:
           command: |
            pipenv install  
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
             - 'venv'
       - run:
