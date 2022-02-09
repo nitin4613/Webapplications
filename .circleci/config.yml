@@ -66,8 +66,7 @@ jobs:
     parallelism: 4
     resource_class: medium # Resource Class defined as Mediums
     steps:
-      - checkout
-      - synk/scan
+      - checkout 
       - run: 
           name: Creating test report Directory
           command: mkdir test-reports
@@ -87,7 +86,9 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements/dev.txt      
+            pip install -r requirements/dev.txt
+        - synk/scan:
+            fail-on-issues: false     
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
