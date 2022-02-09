@@ -73,11 +73,12 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-  Scan via Synk:
-    working_directory: ~/Webapplications
-    docker:
-      - image: cimg/node:12.18.1
-    resource_class: medium
+  
+    Scan via Synk:
+      docker-image-name: ${DOCKER_IMAGE}${CircleCI_SHA1}:
+      environment: 
+        DOCKER_IMAGE: cimg/node:12.18.1
+      - 
     steps:
     - snyk/scan:  
           fail-on-issues: false  
