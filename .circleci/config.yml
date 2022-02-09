@@ -40,11 +40,8 @@ jobs:
     resource_class: small
     steps:
        - checkout
-       - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
-          keys:
-            - pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            - pip-packages-v1-{{ .Branch }}-
-            - pip-packages-v1-
+       - restore_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
        - run: 
           name: Install Python venv 
           command: | 
@@ -53,11 +50,10 @@ jobs:
           name: Check Python version
           command: | 
             pipenv run python --version
-       
-       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
-          key: pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+       - save_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
           paths:
-            - ./venv
+            - 'venv'
 
   test:       
     docker:
@@ -79,17 +75,14 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
       
-      - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
-          keys:
-            - pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            - pip-packages-v1-{{ .Branch }}-
-            - pip-packages-v1-
+      - restore_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
       - snyk/scan:
             fail-on-issues: false
-      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
-          key: pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - save_cache:
+          key: deps2-{{ checksum "requirements/dev.txt" }}
           paths:
-            - ./venv 
+            - 'venv'
       - run: 
           name: Install Python venv 
           command: | 
