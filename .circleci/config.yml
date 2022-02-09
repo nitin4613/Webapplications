@@ -60,6 +60,7 @@ jobs:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
+      - snyk/scan-iac
       - run:
           name: Activate venv and Checking python version
           command: |
@@ -73,17 +74,17 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-  Scan via Synk:
-      working_directory: ~/Webapplications
-      description: Scan your applications IaC files for issues
-      resource_class: medium
-      docker:
-        - image: 'snyk/snyk-cli:npm'
-      steps:
-       - checkout
-       - snyk/scan:
-            command: iac test
-            monitor-on-build: false 
+  # Scan via Synk:
+  #     working_directory: ~/Webapplications
+  #     description: Scan your applications IaC files for issues
+  #     resource_class: medium
+  #     docker:
+  #       - image: 'snyk/snyk-cli:npm'
+  #     steps:
+  #      - checkout
+  #      - snyk/scan:
+  #           command: iac test
+  #           monitor-on-build: false 
             
   test:     
     working_directory: ~/Webapplications
