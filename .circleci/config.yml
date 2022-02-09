@@ -5,7 +5,7 @@ orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
-
+  snyk: snyk/snyk@1.1.2
 
 ################################################################################
 # Workflows
@@ -90,10 +90,10 @@ jobs:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
+      - snyk/scan
       - run:
           name: Running Test
           command: |
-            TEST=$(circleci tests  "/tests/test_front.py."| circleci tests split --split-by=timings)
             . venv/bin/activate
             python manage.py test
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
@@ -101,5 +101,5 @@ jobs:
           destination: tr1
       - store_test_results:
           path: test-reports/ 
-
+         
            
