@@ -75,8 +75,9 @@ jobs:
     - sonarcloud/scan
     Scan via Synk:
     - snyk/scan:
-        docker-image-name: circleci/python:3.9.2-browsers
-          fail-on-issues: false  
+      fail-on-issues: false  
+      docker-image-name: circleci/python:3.9.2-browsers
+         
   test:     
     working_directory: ~/Webapplications
     docker:
