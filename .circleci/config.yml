@@ -81,7 +81,7 @@ jobs:
         - image: 'snyk/snyk-cli:npm'
       steps:
        - checkout
-       - synk/scan:
+       - snyk/scan:
             command: iac test
             monitor-on-build: false 
             
