@@ -46,24 +46,24 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          keys: 
+                - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+                - pip-packages-v1-{{ .Branch }}-
+                - pip-packages-v1-
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt    
+           pipenv install 
       - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - 'venv'
-            - pipenv update
       - snyk/scan 
-      - run:
-          name: Activate venv and Checking python version
-          command: |
-            . venv/bin/activate
-            python --version 
+      # - run:
+      #     name: Activate venv and Checking python version
+      #     command: |
+      #       . venv/bin/activate
+      #       python --version 
   Scan via SonarCloud:
     working_directory: ~/Webapplications
     docker:
@@ -94,22 +94,23 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
       - restore_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          keys: 
+                - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+                - pip-packages-v1-{{ .Branch }}-
+                - pip-packages-v1-
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt      
+           pipenv install  
       - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - 'venv'
       - run:
           name: Running Test
           command: |
-            . venv/bin/activate
-            python manage.py test
+            pipenv install 
+            pipenv install unittest-xml-reporting
             
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
