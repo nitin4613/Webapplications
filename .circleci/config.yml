@@ -81,7 +81,7 @@ jobs:
           background: true
       - restore_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
-      - run:
+      -  run:
           name: Creating venv and Installing Python Dependencies
           command: |
             python3 -m venv venv
