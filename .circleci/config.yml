@@ -92,12 +92,13 @@ jobs:
             - 'venv'
       - snyk/scan:
           fail-on-issues: false
+            --skip-unresolved= flask, jinja2, markupsafe, werkzeug, attrs, click, coverage, gunicorn, iniconfig, itsdangerous, pluggy, py, pyparsing, pytest, toml
       - run:
           name: Running Test
           command: |
             . venv/bin/activate
             python manage.py test
-            pipenv update
+            
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
           destination: tr1
