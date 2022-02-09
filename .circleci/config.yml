@@ -5,7 +5,6 @@ orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
-  snyk: snyk/snyk@1.1.2
 
 
 ################################################################################
@@ -35,29 +34,36 @@ workflows:
 
 jobs:
   build: 
+    working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers  # convience image
     resource_class: small
     steps:
-       - checkout
-       - restore_cache:
+      - checkout 
+      - restore_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
-       - run:
+      - run:
           name: Creating venv and Installing Python Dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements/dev.txt      
-       - save_cache:
+      - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
+      - run:
+          name: Activate venv and Checking python version
+          command: |
+            . venv/bin/activate
+            python --version 
 
   test:       
+    working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
-    resource_class: medium # Resource Class defined as Mediums
+    resource_class: medium # Resource Class defined as Medium
     steps:
       - checkout 
       - run: 
