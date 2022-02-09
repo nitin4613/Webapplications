@@ -92,7 +92,7 @@ jobs:
             - 'venv'
       - snyk/scan:
           fail-on-issues: false
-            --skip-unresolved= flask, jinja2, markupsafe, werkzeug, attrs, click, coverage, gunicorn, iniconfig, itsdangerous, pluggy, py, pyparsing, pytest, toml
+            --skip-unresolved = true
       - run:
           name: Running Test
           command: |
