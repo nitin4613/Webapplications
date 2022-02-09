@@ -17,14 +17,14 @@ workflows:
     jobs:
       - build
       - test
-      - sonarcloud:
+      - Scan via SonarCloud:
           context: SonarCloud     
       - hold:
           type: approval
           requires:
             - build
             - test
-            - sonarcloud
+            - Scan via SonarCloud
       - heroku/deploy-via-git:
           requires:
             - hold
