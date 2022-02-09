@@ -42,7 +42,7 @@ jobs:
        - checkout
        - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
           keys:
-            - pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt/dev" }}
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
             - pip-packages-v1-{{ .Branch }}-
             - pip-packages-v1-
        - run: 
@@ -55,7 +55,7 @@ jobs:
             pipenv run python --version
        
        - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
-          key: pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt/dev" }}
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - ./venv
 
