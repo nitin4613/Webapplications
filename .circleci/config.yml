@@ -5,6 +5,7 @@ orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
+  snyk: snyk/snyk@1.1.2
 
 
 ################################################################################
@@ -63,9 +64,10 @@ jobs:
     docker:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
-    resource_class: medium # Resource Class defined as Medium
+    resource_class: medium # Resource Class defined as Mediums
     steps:
-      - checkout 
+      - checkout
+      - synk/scan
       - run: 
           name: Creating test report Directory
           command: mkdir test-reports
