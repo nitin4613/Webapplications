@@ -35,7 +35,6 @@ workflows:
 
 jobs:
   build: 
-    
     docker:
       - image: circleci/python:3.9.2-browsers  # convience image
     resource_class: small
@@ -54,14 +53,12 @@ jobs:
             - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             - pip-packages-v1-{{ .Branch }}-
             - pip-packages-v1-
-       
        - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
           key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ./venv
 
   test:       
-    
     docker:
       - image: circleci/python:3.9.2-browsers
     parallelism: 4
@@ -80,11 +77,6 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
-      - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
-          keys:
-            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-            - pip-packages-v1-{{ .Branch }}-
-            - pip-packages-v1-
       - run: 
           name: Install Python venv 
           command: | 
@@ -93,13 +85,17 @@ jobs:
           name: Check Python version
           command: | 
             pipenv run python --version
+      - restore_cache: # downloads new dependencies, if any, and not redownload everything on every build
+          keys:
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - pip-packages-v1-{{ .Branch }}-
+            - pip-packages-v1-
       - snyk/scan:
             fail-on-issues: false
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key 
           key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ./venv 
-
       - run:
           name: Running Test
           command: |
