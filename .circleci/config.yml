@@ -41,17 +41,15 @@ jobs:
     steps:
        - checkout
        - restore_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
-       - run: 
-          name: Install Python venv 
-          command: | 
-            pipenv install 
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
        - run:
-          name: Check Python version
-          command: | 
-            pipenv run python --version
+          name: Creating venv and Installing Python Dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt      
        - save_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
 
@@ -74,23 +72,18 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
-      
       - restore_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
-      - snyk/scan:
-            fail-on-issues: false
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+      - run:
+          name: Creating venv and Installing Python Dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt      
       - save_cache:
-          key: deps2-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
-      - run: 
-          name: Install Python venv 
-          command: | 
-            pipenv install 
-      - run:
-          name: Check Python version
-          command: | 
-            pipenv run python --version
       - run:
           name: Running Test
           command: |
