@@ -90,9 +90,8 @@ jobs:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
-      - snyk/scan:
+      - snyk/scan: 
           fail-on-issues: false
-            --skip-unresolved = true
       - run:
           name: Running Test
           command: |
