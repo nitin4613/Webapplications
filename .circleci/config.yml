@@ -74,11 +74,21 @@ jobs:
     - checkout
     - sonarcloud/scan
   Scan via Synk:
-      working_directory: ~/Webapplications/
+      working_directory: ~/Webapplications
+      description: Scan your applications IaC files for issues
       docker:
-        - image: circleci/python:3.9.2-browsers  
+        - image: 'snyk/snyk-cli:npm'
       steps:
-        - snyk/scan  
+       - parameters:
+            args:
+              default: ''
+              resource_class: medium
+              steps:
+                    - checkout
+                    - scan:
+                      additional-arguments: <<parameters.args>>
+                      command: iac test
+                      monitor-on-build: false 
             
   test:     
     working_directory: ~/Webapplications
