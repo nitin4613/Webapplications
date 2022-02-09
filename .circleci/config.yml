@@ -57,7 +57,8 @@ jobs:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
-      - snyk/scan
+            - pipenv update
+      - snyk/scan 
       - run:
           name: Activate venv and Checking python version
           command: |
