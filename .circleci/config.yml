@@ -47,7 +47,9 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements/dev.txt      
+            pip install -r requirements/dev.txt
+      - snyk/scan: 
+          fail-on-issues: false      
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
@@ -90,8 +92,6 @@ jobs:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
-      - snyk/scan: 
-          fail-on-issues: false
       - run:
           name: Running Test
           command: |
