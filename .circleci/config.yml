@@ -15,7 +15,8 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build:
+      - build
+      - sonarcloud:
           context: SonarCloud
       - test
       - hold:
@@ -23,7 +24,7 @@ workflows:
           requires:
             - build
             - test
-            - sonarcloud
+            
       - heroku/deploy-via-git:
           requires:
             - hold
