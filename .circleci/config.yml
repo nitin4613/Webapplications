@@ -87,7 +87,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements/dev.txt
-      - synk/scan:
+      - snyk/scan:
             fail-on-issues: false     
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
