@@ -28,9 +28,6 @@ workflows:
       - hold:
           type: approval
           requires:
-            - build
-            - test
-            - Scan via SonarCloud
             - Scan via Synk
       - heroku/deploy-via-git:
           requires:
