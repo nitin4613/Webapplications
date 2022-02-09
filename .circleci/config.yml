@@ -76,19 +76,14 @@ jobs:
   Scan via Synk:
       working_directory: ~/Webapplications
       description: Scan your applications IaC files for issues
+      resource_class: medium
       docker:
         - image: 'snyk/snyk-cli:npm'
       steps:
-       - parameters:
-            args:
-              default: ''
-              resource_class: medium
-              steps:
-                    - checkout
-                    - scan:
-                      additional-arguments: <<parameters.args>>
-                      command: iac test
-                      monitor-on-build: false 
+       - checkout
+       - scan:
+            command: iac test
+            monitor-on-build: false 
             
   test:     
     working_directory: ~/Webapplications
