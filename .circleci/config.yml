@@ -97,6 +97,7 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py test
+            pipenv update
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
           destination: tr1
