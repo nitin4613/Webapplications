@@ -18,13 +18,22 @@ workflows:
       - build
       - test
       - Scan via SonarCloud:
-          context: SonarCloud     
+          context: SonarCloud
+          requires:
+            - build
+            - test
+      - Scan via Synk:
+          requires:
+            - build
+            - test
+            - Scan via SonarCloud       
       - hold:
           type: approval
           requires:
             - build
             - test
             - Scan via SonarCloud
+            - Scan via Synk
       - heroku/deploy-via-git:
           requires:
             - hold
@@ -51,9 +60,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements/dev.txt
-      - snyk/scan:  
-          fail-on-issues: false      
+            pip install -r requirements/dev.txt    
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
@@ -71,6 +78,14 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
+  Scan via Synk:
+    working_directory: ~/Webapplications
+    docker:
+      - image: cimg/node:12.18.1
+    resource_class: medium
+    steps:
+    - snyk/scan:  
+          fail-on-issues: false  
   test:     
     working_directory: ~/Webapplications
     docker:
