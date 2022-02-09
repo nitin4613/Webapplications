@@ -24,8 +24,6 @@ workflows:
             - test
       - Scan via Synk:
           requires:
-            - build
-            - test
             - Scan via SonarCloud       
       - hold:
           type: approval
