@@ -6,6 +6,7 @@ orbs:
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
   snyk: snyk/snyk@1.1.2
+  sonarcloud: sonarsource/sonarcloud@1.0.3
 
 ################################################################################
 # Workflows
@@ -14,7 +15,8 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build
+      - build:
+          context: SonarCloud
       - test
       - hold:
           type: approval
@@ -39,7 +41,8 @@ jobs:
       - image: circleci/python:3.9.2-browsers  # convience image
     resource_class: small
     steps:
-      - checkout 
+      - checkout
+      - sonarcloud/scan
       - restore_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
       - run:
@@ -48,7 +51,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements/dev.txt
-      - snyk/scan: 
+      - snyk/scan:  
           fail-on-issues: false      
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
