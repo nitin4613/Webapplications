@@ -74,11 +74,11 @@ jobs:
     - checkout
     - sonarcloud/scan
   Scan via Synk:
-    docker:
-      - image: cimg/node:12.18.1
-    resource_class: medium
-    steps:
-    - snyk/scan  
+      working_directory: ~/Webapplications
+      docker:
+        - image: circleci/python:3.9.2-browsers  
+      steps:
+        - snyk/scan  
             
   test:     
     working_directory: ~/Webapplications
