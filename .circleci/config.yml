@@ -22,13 +22,13 @@ workflows:
           requires:
             - build
             - test
-      - Scan via Synk:
-          requires:
-            - Scan via SonarCloud       
+      # - Scan via Synk:
+      #     requires:
+      #       - Scan via SonarCloud       
       - hold:
           type: approval
           requires:
-            - Scan via Synk
+             - Scan via SonarCloud
       - heroku/deploy-via-git:
           requires:
             - hold
