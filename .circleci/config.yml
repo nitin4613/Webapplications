@@ -13,27 +13,27 @@ orbs:
 ################################################################################
 workflows:
   version: 2
-build-deploy:
-  jobs:
-    - build
-    - test
-    - Scan via SonarCloud:
-        context: SonarCloud
-        requires:
-          - build
-          - test
-    - Scan via Synk:
-        requires:
-          - Scan via SonarCloud       
-    - hold:
-        type: approval
-        requires:
-          - Scan via Synk
-    - heroku/deploy-via-git:
-        requires:
+  build-deploy:
+    jobs:
+      - build
+      - test
+      - Scan via SonarCloud:
+          context: SonarCloud
+          requires:
+            - build
+            - test
+      - Scan via Synk:
+          requires:
+            - Scan via SonarCloud       
+      - hold:
+          type: approval
+          requires:
+            - Scan via Synk
+      - heroku/deploy-via-git:
+          requires:
           - hold
-        filters:
-          branches:
+          filters:
+           branches:
             only: master
 
 ################################################################################
