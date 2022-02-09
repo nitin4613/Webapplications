@@ -73,9 +73,9 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-    Scan via Synk:
-    - snyk/scan:
-      fail-on-issues: false      
+Scan via Synk:
+  steps:
+    - snyk/scan   
   test:     
     working_directory: ~/Webapplications
     docker:
