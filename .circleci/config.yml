@@ -16,15 +16,15 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - sonarcloud:
-          context: SonarCloud
       - test
+      - sonarcloud:
+          context: SonarCloud     
       - hold:
           type: approval
           requires:
             - build
             - test
-            
+            - sonarcloud
       - heroku/deploy-via-git:
           requires:
             - hold
@@ -63,7 +63,7 @@ jobs:
           command: |
             . venv/bin/activate
             python --version 
-  sonarcloud:
+  Scan via SonarCloud:
     working_directory: ~/Webapplications
     docker:
       - image: cimg/node:12.18.1
