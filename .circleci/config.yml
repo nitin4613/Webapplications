@@ -62,8 +62,15 @@ jobs:
           command: |
             . venv/bin/activate
             python --version 
-
-  test:       
+  sonarqube:
+    working_directory: ~/Webapplications
+    docker:
+      - image: cimg/node:12.18.1
+    resource_class: large
+    steps:
+    - checkout
+    - sonarcloud/scan
+  test:     
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers
