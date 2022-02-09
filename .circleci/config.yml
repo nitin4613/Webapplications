@@ -73,14 +73,9 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-  
     Scan via Synk:
-      docker-image-name: ${DOCKER_IMAGE}${CircleCI_SHA1}
-        environment: 
-          DOCKER_IMAGE: cimg/node:12.18.1
-      - 
-    steps:
-    - snyk/scan:  
+    - snyk/scan:
+        docker-image-name: circleci/python:3.9.2-browsers
           fail-on-issues: false  
   test:     
     working_directory: ~/Webapplications
