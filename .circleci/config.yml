@@ -109,8 +109,6 @@ jobs:
       - run:
           name: Running Test
           command: |
-            pipenv install 
-            pipenv install unittest-xml-reporting
             TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
             . venv/bin/activate
             python manage.py test
