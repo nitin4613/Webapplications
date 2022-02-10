@@ -20,7 +20,7 @@ workflows:
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
-            -  build and snyk scan
+            - build and snyk scan
             - test   
       - hold:
           type: approval
