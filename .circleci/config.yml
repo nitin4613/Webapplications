@@ -109,7 +109,8 @@ jobs:
       - run:
           name: Running Test
           command: |
-            python manage.py test            
+            pipenv install 
+            pipenv install unittest-xml-reporting          
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
           destination: tr1
