@@ -34,7 +34,7 @@ workflows:
               only: master
 
 ################################################################################
-# Defining jobs inside 
+# Defining jobs
 ###############################################################################
 
 jobs:
@@ -111,6 +111,10 @@ jobs:
           command: |
             pipenv install 
             pipenv install unittest-xml-reporting
+            TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
+            . venv/bin/activate
+            python manage.py test
+           
             
       - store_artifacts: # Artifacts displays test data after a workflow finishes 
           path: test-reports/
