@@ -15,12 +15,12 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build
+      - build and snyk scan
       - test
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
-            - build
+            -  build and snyk scan
             - test   
       - hold:
           type: approval
@@ -38,7 +38,7 @@ workflows:
 ###############################################################################
 
 jobs:
-  build: 
+  build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
       - image: circleci/python:3.9.2-browsers  # convience image
