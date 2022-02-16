@@ -111,7 +111,7 @@ jobs:
           command: |
             pipenv install 
             pipenv install unittest-xml-reporting          
-      - store_artifacts: # Artifacts displays test data after a workflow finish
+      - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
       - store_test_results:
