@@ -17,6 +17,7 @@ workflows:
     jobs:
       - build and snyk scan
       - test
+      - runner
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
@@ -117,4 +118,9 @@ jobs:
       - store_test_results:
           path: test-reports/ 
          
-           
+   jobs:  
+  runner:
+    machine: true
+    resource_class: runner-nitin/runner-demo
+    steps:
+      - run: echo "Hi I'm on Runner"  
