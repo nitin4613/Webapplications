@@ -121,4 +121,4 @@ jobs:
     machine: true
     resource_class: runner-nitin/runner-demo
     steps:
-      - run: echo "Hi I'm on Runner"  
+      - run: echo "Hello, This job is on Runner"  
