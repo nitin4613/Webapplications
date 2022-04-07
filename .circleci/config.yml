@@ -6,11 +6,10 @@ orbs:
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
   snyk: snyk/snyk@1.1.2
-  sonarcloud: sonarsource/sonarcloud@1.0.3
-services:  
+  sonarcloud: sonarsource/sonarcloud@1.0.3  
 ###################################################################################
 # Workflows
-#################################################################################
+###################################################################################
 workflows:
   version: 2
   build-deploy:
