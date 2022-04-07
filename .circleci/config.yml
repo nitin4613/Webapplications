@@ -42,7 +42,7 @@ jobs:
   build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.10.4-browsers  # convience image
+      - image: cimg/python:3.10.4-browsers  # convience image
     resource_class: small
     steps:
       - checkout
@@ -77,7 +77,7 @@ jobs:
   test:     
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.10.4-browsers
+      - image: cimg/python:3.10.4-browsers
     parallelism: 4
     resource_class: medium # Resource Class defined as Medium
     steps:
