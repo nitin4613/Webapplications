@@ -1,6 +1,6 @@
 version: 2.1 # CircleCI version number##
 
-#### Orbs #####
+#### Orbs ######
 orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
