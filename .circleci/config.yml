@@ -1,6 +1,6 @@
 version: 2.1 # CircleCI version number##
 
-#### Orbs ########
+#### Orbs #########
 orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
@@ -78,7 +78,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: medium # Resource Class defined as Medium
+    resource_class: m edium # Resource Class defined as Medium
     steps:
       - checkout 
       - run: 
