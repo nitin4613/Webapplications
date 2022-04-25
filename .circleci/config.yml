@@ -78,7 +78,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: m edium # Resource Class defined as Medium
+    resource_class: medium # Resource Class defined as Medium
     steps:
       - checkout 
       - run: 
