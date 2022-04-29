@@ -78,7 +78,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: medium # Resource Class defined as Medium
+    resource_class: medium # Resource Class defined as Mediumi
     steps:
       - checkout 
       - run: 
@@ -93,7 +93,6 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
-
       - restore_cache:
           keys: 
                 - pip-packages-v1-{{ .Branch }}-nitin
