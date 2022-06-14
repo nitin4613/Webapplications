@@ -61,7 +61,7 @@ jobs:
             - 'venv'
       - snyk/scan 
       # - run:
-      #     name: Activate venv and Checking python versions
+      #     name: Activate venv and Checking python version
       #     command: |
       #       . venv/bin/activate
       #       python --version 
