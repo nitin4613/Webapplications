@@ -1,22 +1,30 @@
+<<<<<<< HEAD
 version: 2.1 # CircleCI version numbers
+=======
+version: 2.1 # CircleCI version number####
+>>>>>>> 5aec7aed98f8eec2b5dc4b621c40e8b250f5f99b
 
-#### Orbs ####
+#### Orbs ##########
 orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
   slack: circleci/slack@4.6.3 # Slack Notifications
   snyk: snyk/snyk@1.1.2
-  sonarcloud: sonarsource/sonarcloud@1.0.3
-
-#################################################################################
+  sonarcloud: sonarsource/sonarcloud@1.0.3  
+####################################################################################
 # Workflows
+<<<<<<< HEAD
 ################################################################################
+=======
+###################################################################################
+>>>>>>> 5aec7aed98f8eec2b5dc4b621c40e8b250f5f99b
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build and snyk scan
       - test
+      - runner
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
@@ -33,15 +41,15 @@ workflows:
             branches:
               only: master
 
-################################################################################
-# Defining jobs
-################################################################################
+###################################################################################
+# Defining jobss
+###################################################################################
 
 jobs:
   build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.9.2-browsers  # convience image
+      - image: cimg/python:3.10.4-browsers  # convience image
     resource_class: small
     steps:
       - checkout
@@ -60,7 +68,7 @@ jobs:
             - 'venv'
       - snyk/scan 
       # - run:
-      #     name: Activate venv and Checking python version
+      #     name: Activate venv and Checking python versions
       #     command: |
       #       . venv/bin/activate
       #       python --version 
@@ -76,7 +84,7 @@ jobs:
   test:     
     working_directory: ~/Webapplications
     docker:
-      - image: circleci/python:3.9.2-browsers
+      - image: cimg/python:3.10.4-browsers
     parallelism: 4
     resource_class: medium # Resource Class defined as Medium
     steps:
@@ -104,17 +112,19 @@ jobs:
            pipenv install  
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
-          paths:
-            - 'venv'
+          paths: ./test-reports/
       - run:
           name: Running Test
           command: |
             pipenv install 
             pipenv install unittest-xml-reporting          
-      - store_artifacts: # Artifacts displays test data after a workflow finishes 
+      - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
       - store_test_results:
-          path: test-reports/ 
-         
-           
+          path: test-reports/  
+  runner:
+    machine: true
+    resource_class: runner-nitin/runner-demo
+    steps:
+      - run: echo "Hello, This job is on Runner"  
