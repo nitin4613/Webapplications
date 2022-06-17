@@ -47,7 +47,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          keys: pip-packages-v1-{{.Branch}}-{{ checksum"requirements/dev.txt" }}
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
@@ -57,11 +57,6 @@ jobs:
           paths:
             - 'venv'
       - snyk/scan 
-      # - run:
-      #     name: Activate venv and Checking python version
-      #     command: |
-      #       . venv/bin/activate
-      #       python --version 
   Scan via SonarCloud:
     working_directory: ~/Webapplications
     docker:
