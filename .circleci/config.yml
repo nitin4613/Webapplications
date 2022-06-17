@@ -97,9 +97,9 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt     
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements/dev.txt     
       - save_cache:
           key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
@@ -107,9 +107,9 @@ jobs:
       - run:
           name: Running Test
           command: |
-           TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
-            . venv/bin/activate
-            python manage.py test    
+                  TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
+                  . venv/bin/activate
+                  python manage.py test    
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
