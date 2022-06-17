@@ -47,16 +47,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: 
-                - pip-packages-v1-{{ .Branch }}-nitin
-                - pip-packages-v1-{{ .Branch }}-
-                - pip-packages-v1-
+          keys: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
            pipenv install 
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-nitin
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
           paths:
             - 'venv'
       - snyk/scan 
@@ -96,16 +93,17 @@ jobs:
           background: true
       - restore_cache:
           keys: 
-                - pip-packages-v1-{{ .Branch }}-nitin
-                - pip-packages-v1-{{ .Branch }}-
-                - pip-packages-v1-
+                key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           pipenv install  
+           python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt     
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-nitin
-          paths: ./test-reports/
+          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          paths:
+            - 'venv'
       - run:
           name: Running Test
           command: |
