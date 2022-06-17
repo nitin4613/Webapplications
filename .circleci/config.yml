@@ -86,7 +86,7 @@ jobs:
           name: Creating test report Directory
           command: mkdir test-reports
       - run:
-          name: Download Selenium # Downloading Selenium
+          name: Download Selenium # Downloading Seleniums
           command: |
             curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
       - run:
