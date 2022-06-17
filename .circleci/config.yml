@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           pip install -r requirements/dev.txt
+           pipenv install
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
@@ -102,7 +102,7 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-            pip install -r requirements/dev.txt
+            pipenv install
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths: ./test-reports/
@@ -110,7 +110,7 @@ jobs:
           name: Running Test     
           command: |
             TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
-            python manage.py test
+            pipenv run python manage.py test
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
