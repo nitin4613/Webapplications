@@ -109,8 +109,9 @@ jobs:
       - run:
           name: Running Test
           command: |
-            pipenv install 
-            pipenv install unittest-xml-reporting          
+           TEST=$(circleci tests "/**/math_test.py"| circleci tests split --split-by=timings)
+           . venv/bin/activate
+           python math_test.py test      
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
