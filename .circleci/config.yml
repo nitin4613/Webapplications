@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           pipenv install -r Pipfile_dev
+           pipenv install -r requirements/dev.txt
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
@@ -102,7 +102,7 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-            pipenv install -r Pipfile_dev
+             pipenv install -r requirements/dev.txt
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths: ./test-reports/
