@@ -110,7 +110,7 @@ jobs:
           name: Running Test
            #TEST=$(circleci tests "/home/circleci/Webapplications/tests/math_test.py"| circleci tests split --split-by=timings)     
           command: |
-           python3 tests/math_test.py
+           python3 tests/test_math.py
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
