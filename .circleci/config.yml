@@ -47,16 +47,24 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: pip-packages-v1-{{.Branch}}-{{ checksum"requirements/dev.txt" }}
+          keys: 
+                - pip-packages-v1-{{ .Branch }}-nitin
+                - pip-packages-v1-{{ .Branch }}-
+                - pip-packages-v1-
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
            pipenv install 
       - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+          key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
             - 'venv'
       - snyk/scan 
+      # - run:
+      #     name: Activate venv and Checking python version
+      #     command: |
+      #       . venv/bin/activate
+      #       python --version 
   Scan via SonarCloud:
     working_directory: ~/Webapplications
     docker:
@@ -88,23 +96,22 @@ jobs:
           background: true
       - restore_cache:
           keys: 
-                key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
+                - pip-packages-v1-{{ .Branch }}-nitin
+                - pip-packages-v1-{{ .Branch }}-
+                - pip-packages-v1-
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r requirements/dev.txt     
+           pipenv install  
       - save_cache:
-          key: pip-packages-v1-{{.Branch}}-{{ checksum "requirements/dev.txt" }}
-          paths:
-            - 'venv'
+          key: pip-packages-v1-{{ .Branch }}-nitin
+          paths: ./test-reports/
       - run:
           name: Running Test
           command: |
-                  TEST=$(circleci tests  "/**/manage.py"| circleci tests split --split-by=timings)
-                  . venv/bin/activate
-                  python manage.py test    
+           TEST=$(circleci tests "/**/manage.py"| circleci tests split --split-by=timings)
+           . venv/bin/activate
+           python manage.py test      
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
