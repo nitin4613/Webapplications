@@ -43,7 +43,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: cimg/python:3.10.4-browsers  # convience image
-    resource_class: small
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -79,7 +79,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: medium # Resource Class defined as Medium
+    resource_class: large # Resource Class defined as large
     steps:
       - checkout 
       - run: 
@@ -109,9 +109,9 @@ jobs:
       - run:
           name: Running Test
           command: |
-           TEST=$(circleci tests "math_test.py"| circleci tests split --split-by=timings)
-           . venv/bin/activate
-           python math_test.py test      
+            TEST=$(circleci tests "tests/math_test.py"| circleci tests split --split-by=timings)
+            . venv/bin/activate
+            python math_test.py test      
       - store_artifacts: # Artifacts displays test data after a workflow finishes
           path: test-reports/
           destination: tr1
