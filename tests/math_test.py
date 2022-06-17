@@ -24,8 +24,8 @@ class TestMath:
 
     def test_sum_neg_1_and_1(self):
         """Sum of -1 and 1"""
-    output = self.sum(-1, 1)
-    assert output == 0
+        output = self.sum(-1, 1)
+        assert output == 0
 
     def test_sum_0_and_0(self):
         """Sum of 0 and 0"""
