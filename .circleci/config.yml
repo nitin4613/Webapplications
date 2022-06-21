@@ -18,7 +18,6 @@ workflows:
       - build and snyk scan
       - test
       - runner
-      - container-agent
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
@@ -121,10 +120,4 @@ jobs:
     machine: true
     resource_class: runner-nitin/runner-demo
     steps:
-      - run: echo "Hello, This job is on Runner"  
-  container-agent:
-    docker:
-      - image: cimg/base:2021.11
-      resource_class: runner-nitin/container-agent-preview
-    steps:
-      - run: echo "Hello, This job is on Container Agent"
+      - run: echo "Hello, This job is on Runner"
