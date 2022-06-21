@@ -18,6 +18,7 @@ workflows:
       - build and snyk scan
       - test
       - runner
+      - container-agent
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
