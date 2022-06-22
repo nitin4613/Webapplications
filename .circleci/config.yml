@@ -112,7 +112,7 @@ jobs:
           command: |
             TEST=$(circleci tests "/**/manage.py"| circleci tests split --split-by=timings)
             pipenv run python manage.py test
-      - store_artifacts: # Artifacts displays test data after a workflow finishes
+      - store_artifacts: # Artifacts displays test data after a workflow finishess
           path: test-reports/
           destination: tr1
       - store_test_results:
