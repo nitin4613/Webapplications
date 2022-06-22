@@ -126,6 +126,6 @@ jobs:
   container-agent:
     docker:
       - image: cimg/base:2021.11
-    resource_class: runner-nitin/container-agent-preview
+    resource_class: runner-nitin/containeragent
     steps:
       - run: echo "Hello, This job is on Container Agent"
