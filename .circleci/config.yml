@@ -43,7 +43,7 @@ jobs:
   build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
-      - image: cimg/python:3.10.4-browsers  # convience images
+      - image: cimg/python:3.10.4-browsers  # convience imagess
     resource_class: medium
     steps:
       - checkout
