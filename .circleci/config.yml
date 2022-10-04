@@ -80,7 +80,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: large # Resource Class defined as larges
+    resource_class: large # Resource Class defined as large
     steps:
       - checkout 
       - run: 
