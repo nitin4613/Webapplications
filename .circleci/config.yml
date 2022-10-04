@@ -36,7 +36,7 @@ workflows:
               only: master
 
 #####################################################################################
-# Defining jobss
+# Defining jobs
 #####################################################################################
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: cimg/python:3.10.4-browsers  # convience imagess
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - restore_cache:
