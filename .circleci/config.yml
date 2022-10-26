@@ -43,7 +43,7 @@ jobs:
   build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
-      - image: cimg/python:3.10.4-browsers  # convience imagess
+      - image: cimg/python:3.10.4-browsers  # convinence imagess
     resource_class: large
     steps:
       - checkout
@@ -61,6 +61,7 @@ jobs:
           paths:
             - 'venv'
       - snyk/scan 
+
       # - run:
       #     name: Activate venv and Checking python version
       #     command: |
