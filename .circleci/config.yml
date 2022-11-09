@@ -61,7 +61,7 @@ jobs:
           paths:
             - 'venv'
       - snyk/scan:
-          docker-image-name: cimg/python:3.10.4-browsers
+          docker-image-name: cimg/base:2021.11
 
       # - run:
       #     name: Activate venv and Checking python version
