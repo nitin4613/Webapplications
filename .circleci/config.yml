@@ -37,7 +37,7 @@ workflows:
 
 ######################################################################################
 # Defining jobs
-#####################################################################################
+######################################################################################
 
 jobs:
   build and snyk scan: 
@@ -60,7 +60,8 @@ jobs:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
             - 'venv'
-      - snyk/scan 
+      - snyk/scan:
+          docker-image-name: cimg/python:3.10.4-browsers
 
       # - run:
       #     name: Activate venv and Checking python version
