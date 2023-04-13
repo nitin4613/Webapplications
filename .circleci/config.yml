@@ -28,6 +28,9 @@ workflows:
           type: approval
           requires:
             - Scan via SonarCloud
+          filters:
+            branches: 
+              only: main
       - heroku/deploy-via-git:
           requires:
             - hold
