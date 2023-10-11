@@ -36,7 +36,7 @@ workflows:
             - hold
           filters:
             branches:
-              only: master
+              only: main
 
 ######################################################################################
 # Defining jobs
