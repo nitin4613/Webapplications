@@ -30,13 +30,13 @@ workflows:
             - Scan via SonarCloud
           filters:
             branches: 
-              only: main
+              only: master
       - heroku/deploy-via-git:
           requires:
             - hold
           filters:
             branches:
-              only: main
+              only: master
 
 ######################################################################################
 # Defining jobs
