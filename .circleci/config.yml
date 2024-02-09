@@ -115,7 +115,7 @@ jobs:
       - run:
           name: Running Test
           command: |
-              TEST=$(circleci glob tests "/**/manage.py" | circleci tests split --split-by=timings)
+              TEST=$(circleci tests "/**/manage.py" | circleci tests split --split-by=timings)
               pipenv run python manage.py test
       - store_artifacts:
           path: test-reports/
