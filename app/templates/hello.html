@@ -1,47 +1,104 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Python Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .container {
+            background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8.5px);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            color: #00adb5;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #2e2e2e;
+            border-radius: 5px;
+            background-color: #222;
+            color: #ddd;
+        }
+        .submit-button {
+            background-color: #00adb5;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: #007b8f;
+        }
+        #showText {
+            display: none;
+            text-align: center;
+        }
+        #footer {
+            color: #00adb5;
+        }
+    </style>
+</head>
 <body>
-<script>
-    function removeButton(){
-        var hidex = document.getElementById("hideme");
-        var hidetext = document.getElementById("header");
-        var displaytext = document.getElementById("showText");
-        hidex.style.display="none";
-        hidetext.style.display = "none";
-        displaytext.style.display = "block";
-    }
-</script>
-<center>
-    <h1 id="header">
-        <font color="red"> Welcome Page</font>
-    </h1>
-</center>
-<div id ="hideme">
-<form method="get" action="/MyFirstWeb/sample"></form>
+    <div class="container">
+        <h1 id="header">Welcome folks Please Register</h1>
+        <div id="hideme">
+            <form method="get" action="/MyFirstWeb/sample">
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname">
 
-    <table>
-        <tr>
-            <td><label for="fname">First Name</label></td>
-            <td><input type="text" name="fname" id="fname"></td>
-        </tr>
-        <tr>
-            <td><label for="mname">Middle Name</label></td>
-            <td><input type="text" name="mname" id="mname"></td>
-        </tr>
-        <tr>
-            <td><label for="lname">Last Name</label></td>
-            <td><input type="text" name="lname" id="lname"></td>
-        </tr>
-    </table> 
-    <br> <br> 
-    <div style="text-align: center;">
-        <button class="submit-button" onclick="removeButton()"> Submit </button>
+                <label for="mname">Middle Name</label>
+                <input type="text" name="mname" id="mname">
+
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" id="lname">
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="button" class="submit-button" onclick="removeButton()">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div id="showText">
+            <h1 id="footer">Thanks for logging in! Enjoy</h1>
+        </div>
     </div>
-</div>
-    <div id="showText" style="display: none; text-align: center;">
-    <h1 id ="footer">
-        <font color="red">Thanks for logging in! Enjoy</font>
-    </h1>
-    </div>
-    </form>
-    </boby>
+
+    <script>
+        function removeButton() {
+            var hidex = document.getElementById("hideme");
+            var displaytext = document.getElementById("showText");
+            hidex.style.display = "none";
+            displaytext.style.display = "block";
+        }
+    </script>
+</body>
 </html>
