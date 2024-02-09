@@ -56,24 +56,24 @@ class SeleniumTestCase(unittest.TestCase):
     def test_admin_home_page(self):
         # navigate to home page
         self.client.get('http://localhost:5000/')
-        submit_btn = self.client.find_element_by_css_selector(".submit-button").click()
+        submit_btn = self.client.find_element(".submit-button").click()
         font_element_text = self.client.find_element_by_css_selector("#showText").find_element_by_css_selector("font").text
         self.assertTrue(re.search('Thanks for logging in! Enjoy', font_element_text))
 
     def test_FirstName(self):
         # navigate to home page and verify string tag firstname
         self.client.get('http://localhost:5000/')
-        font_element_fname = self.client.find_element_by_name("fname")
+        font_element_fname = self.client.find_element("fname")
         self.assertTrue(font_element_fname)
     
     def test_MiddleName(self):
         # navigate to home page and verify string tag firstname
         self.client.get('http://localhost:5000/')
-        font_element_mname = self.client.find_element_by_name("mname")
+        font_element_mname = self.client.find_element("mname")
         self.assertTrue(font_element_mname)
 
     def test_LastName(self):
         # navigate to home page and verify string tag firstname
         self.client.get('http://localhost:5000/')
-        font_element_lname = self.client.find_element_by_name("lname")
+        font_element_lname = self.client.find_element("lname")
         self.assertTrue(font_element_lname)

@@ -79,62 +79,50 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-  test:
+            
+  test:     
+    working_directory: ~/Webapplications
     docker:
-      - image: cimg/python:3.10.4-browsers # Adjust based on your needs
-    resource_class: large # Adjust based on resource requirements
+      - image: cimg/python:3.10.4-browsers
+    parallelism: 4
+    resource_class: large 
     steps:
-      - checkout
-
-      # Set up web driver (replace with your approach)
-      - restore_cache:
-          keys:
-            - chromedriver-v107.0.5304.62 # Replace with specific version
-          paths:
-            - /usr/local/bin/
+      - checkout 
+      - run: 
+          name: Creating test report Directory
+          command: mkdir -p test-reports
       - run:
-          name: Download ChromeDriver (if not cached)
+          name: Download Selenium 
           command: |
-            curl -o https://chromedriver.storage.googleapis.com/107.0.5304.62/chromedriver_linux64.zip
-            unzip -o chromedriver_linux64.zip
-            chmod +x chromedriver
-            mv chromedriver /usr/local/bin/
-      - save_cache:
-          key: chromedriver-v107.0.5304.62 # Replace with specific version
-          paths:
-            - /usr/local/bin/
-
-      # Install dependencies
+            curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+      - run:
+          name: Start Selenium
+          command: |
+            java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
+          background: true
       - restore_cache:
           keys:
-            - pip-packages-v1-{{ .Branch }}-nitin # Replace with your key format
-          paths:
-            - .venv
+            - pip-packages-v2-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+            - pip-packages-v2-{{ .Branch }}-
+            - pip-packages-v2-
       - run:
-          name: Install dependencies
+          name: Creating venv and Installing Python Dependencies
           command: |
             pipenv install -r requirements/dev.txt
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-nitin # Replace with your key format
+          key: pip-packages-v2-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
           paths:
-            - .venv
-
-      # Start Flask app (adjust command and background logic if needed)
+          - /home/circleci/.cache/pip
       - run:
-          name: Start Flask app
+          name: Running Test
           command: |
-            pipenv run python manage.py runserver --port=5000 &
-
-      # Run tests
-      - run:
-          name: Run tests
-          command: pipenv run python manage.py test
-
-      # Store test results and artifacts (adjust paths)
-      - store_test_results:
-          path: test-reports/  # Adapt path to your reports dir
+              TEST=$(circleci glob tests "/**/manage.py" | circleci tests split --split-by=timings)
+              pipenv run python manage.py test
       - store_artifacts:
-          path: test-reports/  # Adjust path to desired artifacts
+          path: test-reports/
+          destination: tr1
+      - store_test_results:
+          path: test-reports/
   runner:
     machine: true
     resource_class: runner-nitin/runner-demo
