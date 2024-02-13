@@ -1,79 +1,66 @@
-import re
-import threading
-import time
-import unittest
+import pytest
 from selenium import webdriver
-from app import create_app
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
+pytest.fixture(scope="class")
+def driver_init(request):
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    request.cls.driver = driver
+    yield
+    driver.quit()
 
+@pytest.mark.usefixtures("driver_init")
+class TestWebPage:
+    # This method is called before each test method in the class
+    def setup_method(self, method):
+        # Now it's valid to use self, because it's within an instance method
+        self.driver.get("http://localhost:5000")  # Navigate to your desired URL
+        print("Setup method: Current URL:", self.driver.current_url)
+    def test_initial_visibility_of_elements(self):
+        form_display = self.driver.find_element(By.ID, "hideme").is_displayed()
+        message_display = self.driver.find_element(By.ID, "showText").is_displayed()
+        assert form_display
+        assert not message_display
 
-class SeleniumTestCase(unittest.TestCase):
-    client = None
+    def test_input_field_text_entry(self):
+        fname = self.driver.find_element(By.ID, "fname")
+        mname = self.driver.find_element(By.ID, "mname")
+        lname = self.driver.find_element(By.ID, "lname")
+
+        fname.send_keys("John")
+        mname.send_keys("Quincy")
+        lname.send_keys("Adams")
+
+        assert fname.get_attribute('value') == "John"
+        assert mname.get_attribute('value') == "Quincy"
+        assert lname.get_attribute('value') == "Adams"
+
+    def test_page_load(self):
+        self.driver.get("http://localhost:5000/")  # Replace with your actual URL
+    print("Current URL:", self.driver.current_url)
+    assert "localhost:5000" in self.driver.current_url, "The test did not navigate to the expected URL."
+
+    def test_wait_for_redirect_and_check_title(self):
+        self.driver.get("http://localhost:5000/")  # Starting URL that redirects
+    # Wait for some known element on the target page to become visible
+    WebDriverWait(self.driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "knownElementAfterRedirect"))
+    )
+    assert "Welcome folks Please Register" == self.driver.title, "Page title does not match after redirect."
+
+    def test_direct_navigation_to_page(self):
+        self.driver.get("http://localhost:5000/finalPage")  # Directly go to the target page
+    assert "Welcome folks Please Register" == self.driver.title, "Page title does not match."
     
-    @classmethod
-    def setUpClass(cls):
-        # start Chrome
-        try:
-            cls.client = webdriver.Chrome()
-        except:
-            pass
+    def test_debug_redirection(self):
+        self.driver.get("http://localhost:5000/")
+    print("After initial navigation:", self.driver.current_url, self.driver.title)
+    # Wait for a bit to see if a redirect occurs
+    WebDriverWait(self.driver, 10).until(lambda d: d.current_url != "http://localhost:5000/")
+    print("After waiting for redirect:", self.driver.current_url, self.driver.title)
+    assert "Welcome folks Please Register" == self.driver.title, "Page title does not match after potential redirect."
 
-        # skip these tests if the browser could not be started
-        if cls.client:
-            # create the application
-            cls.app = create_app()
-            cls.app_context = cls.app.app_context()
-            cls.app_context.push()
-
-            # suppress logging to keep unittest output clean
-            import logging
-            logger = logging.getLogger('werkzeug')
-            logger.setLevel("ERROR")
-
-
-            # start the Flask server in a thread
-            threading.Thread(target=cls.app.run).start()
-
-            # give the server a second to ensure it is up
-            time.sleep(1) 
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.client:
-            # stop the flask server and the browser
-            cls.client.get('http://localhost:5000/shutdown')
-            cls.client.close()
-            # remove application context
-            cls.app_context.pop()
-
-    def setUp(self):
-        if not self.client:
-            self.skipTest('Web browser not available')
-
-    def tearDown(self):
-        pass
-    
-    def test_admin_home_page(self):
-        # navigate to home page
-        self.client.get('http://localhost:5000/')
-        submit_btn = self.client.find_element(".submit-button").click()
-        font_element_text = self.client.find_element_by_css_selector("#showText").find_element_by_css_selector("font").text
-        self.assertTrue(re.search('Thanks for logging in! Enjoy', font_element_text))
-
-    def test_FirstName(self):
-        # navigate to home page and verify string tag firstname
-        self.client.get('http://localhost:5000/')
-        font_element_fname = self.client.find_element("fname")
-        self.assertTrue(font_element_fname)
-    
-    def test_MiddleName(self):
-        # navigate to home page and verify string tag firstname
-        self.client.get('http://localhost:5000/')
-        font_element_mname = self.client.find_element("mname")
-        self.assertTrue(font_element_mname)
-
-    def test_LastName(self):
-        # navigate to home page and verify string tag firstname
-        self.client.get('http://localhost:5000/')
-        font_element_lname = self.client.find_element("lname")
-        self.assertTrue(font_element_lname)
