@@ -78,11 +78,6 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
-    requires:
-    - test:
-    - success
-    - failed
-
             
   test:     
     working_directory: ~/Webapplications
