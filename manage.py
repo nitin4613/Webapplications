@@ -27,7 +27,7 @@ def test(coverage=False):
         import sys
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
-    time.sleep(1)
+    time.sleep(5)
     import unittest
     import xmlrunner
     tests = unittest.TestLoader().discover('tests')

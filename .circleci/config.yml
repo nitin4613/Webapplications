@@ -78,7 +78,7 @@ jobs:
     working_directory: ~/Webapplications
     docker:
       - image: cimg/python:3.10.4-browsers
-    parallelism: 4
+    parallelism: 100
     resource_class: medium # Resource Class defined as Medium
     steps:
       - checkout 
