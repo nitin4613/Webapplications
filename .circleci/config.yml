@@ -1,23 +1,23 @@
 version: 2.1 # CircleCI version number
 
-#### Orbs ##########
+#### Orbs ###############
 orbs:
   python: circleci/python@1.4.0 
   heroku: circleci/heroku@1.2.6 # Deploy application with minimal config to Heroku using CircleCI authored
-  slack: circleci/slack@4.6.3 # Slack Notifications
-  snyk: snyk/snyk@1.1.2
+  slack: circleci/slack@4.6.3 # Slack Notifications 
+  snyk: snyk/snyk@1.4.0
   sonarcloud: sonarsource/sonarcloud@1.0.3  
 ####################################################################################
 # Workflows
-################################################################################
 ###################################################################################
+####################################################################################
 workflows:
-  version: 2
   build-deploy:
     jobs:
       - build and snyk scan
       - test
       - runner
+      - container-agent
       - Scan via SonarCloud:
           context: SonarCloud
           requires:
@@ -27,6 +27,9 @@ workflows:
           type: approval
           requires:
             - Scan via SonarCloud
+          filters:
+            branches: 
+              only: master
       - heroku/deploy-via-git:
           requires:
             - hold
@@ -34,16 +37,16 @@ workflows:
             branches:
               only: master
 
-###################################################################################
-# Defining jobss
-###################################################################################
+######################################################################################
+# Defining jobs
+######################################################################################
 
 jobs:
   build and snyk scan: 
     working_directory: ~/Webapplications
     docker:
-      - image: cimg/python:3.10.4-browsers  # convience image
-    resource_class: small
+      - image: cimg/python:3.10.4-browsers  # convinence imagess
+    resource_class: large
     steps:
       - checkout
       - restore_cache:
@@ -54,14 +57,16 @@ jobs:
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           pipenv install 
+           pipenv install -r requirements/dev.txt
       - save_cache:
           key: pip-packages-v1-{{ .Branch }}-nitin
           paths:
             - 'venv'
-      - snyk/scan 
+  #      - snyk/scan:
+  #         docker-image-name: cimg/base:2021.11
+
       # - run:
-      #     name: Activate venv and Checking python versions
+      #     name: Activate venv and Checking python version
       #     command: |
       #       . venv/bin/activate
       #       python --version 
@@ -73,20 +78,25 @@ jobs:
     steps:
     - checkout
     - sonarcloud/scan
+    requires:
+    - test:
+    - success
+    - failed
+
             
   test:     
     working_directory: ~/Webapplications
     docker:
       - image: cimg/python:3.10.4-browsers
-    parallelism: 100
-    resource_class: medium # Resource Class defined as Medium
+    parallelism: 4
+    resource_class: large 
     steps:
       - checkout 
       - run: 
           name: Creating test report Directory
-          command: mkdir test-reports
+          command: mkdir -p test-reports
       - run:
-          name: Download Selenium # Downloading Selenium
+          name: Download Selenium 
           command: |
             curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
       - run:
@@ -95,29 +105,37 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
       - restore_cache:
-          keys: 
-                - pip-packages-v1-{{ .Branch }}-nitin
-                - pip-packages-v1-{{ .Branch }}-
-                - pip-packages-v1-
+          keys:
+            - pip-packages-v2-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+            - pip-packages-v2-{{ .Branch }}-
+            - pip-packages-v2-
       - run:
           name: Creating venv and Installing Python Dependencies
           command: |
-           pipenv install  
+            pipenv install -r requirements/dev.txt
       - save_cache:
-          key: pip-packages-v1-{{ .Branch }}-nitin
-          paths: ./test-reports/
+          key: pip-packages-v2-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+          paths:
+          - /home/circleci/.cache/pip
       - run:
           name: Running Test
           command: |
-            pipenv install 
-            pipenv install unittest-xml-reporting          
-      - store_artifacts: # Artifacts displays test data after a workflow finishes
+              #TEST=$(circleci tests "/**/manage.py" | circleci tests split --split-by=timings)
+              pipenv run python manage.py test
+      - store_artifacts:
           path: test-reports/
           destination: tr1
       - store_test_results:
-          path: test-reports/  
+          path: test-reports/
   runner:
     machine: true
     resource_class: runner-nitin/runner-demo
     steps:
-      - run: echo "Hello, This job is on Runner"  
+      - run: echo "Hello, This job is on Runner"
+
+  container-agent:
+    docker:
+      - image: cimg/base:2021.11
+    resource_class: runner-nitin/containeragent
+    steps:
+      - run: echo "Hello, This job is on Container Agent"
