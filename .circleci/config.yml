@@ -89,7 +89,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.4-browsers
     parallelism: 4
-    resource_class: large 
+    resource_class: small 
     steps:
       - checkout 
       - run: 
