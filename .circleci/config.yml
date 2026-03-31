@@ -1,5 +1,12 @@
 version: 2.1
 
+orbs:
+  python: circleci/python@1.4.0
+  heroku: circleci/heroku@1.2.6
+  slack: circleci/slack@4.6.3
+  snyk: snyk/snyk@1.4.0
+  sonarcloud: sonarsource/sonarcloud@1.0.3
+
 workflows:
   build-deploy:
     jobs:
@@ -49,4 +56,41 @@ jobs:
           command: echo "Mock - Selenium server started on port 4444"
       - run:
           name: Start Flask App
-          command: echo "Mock - Flask app
+          command: echo "Mock - Flask app running on http://127.0.0.1:5000"
+      - run:
+          name: Run Tests
+          command: echo "Mock - All 12 tests passed successfully."
+
+  sonar-scan:
+    docker:
+      - image: cimg/base:2021.11
+    steps:
+      - checkout
+      - run:
+          name: SonarCloud Scan
+          command: echo "Mock - SonarCloud analysis complete. Quality gate passed."
+
+  kubernetes-runner:
+    docker:
+      - image: cimg/base:2021.11
+    steps:
+      - run:
+          name: Kubernetes Runner Job
+          command: echo "Mock - Hello, This job is on Kubernetes Runner"
+
+  self-hosted-ec2-runner:
+    docker:
+      - image: cimg/base:2021.11
+    steps:
+      - run:
+          name: Self-hosted EC2 Runner Job
+          command: echo "Mock - Hello, This job is on Self-hosted EC2 Runner"
+
+  deploy:
+    docker:
+      - image: cimg/base:2021.11
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Heroku
+          command: echo "Mock - Deploying to Heroku... Deployment successful!"
