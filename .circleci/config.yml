@@ -48,7 +48,7 @@ jobs:
   test:
     docker:
       - image: cimg/base:2021.11
-    parallelism: 2
+    parallelism: 10
     steps:
       - checkout
       - run:
